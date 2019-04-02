@@ -1,0 +1,1141 @@
+{
+	"info": {
+		"_postman_id": "a493964e-c2ac-4890-e5ea-ccc38f1cd15e",
+		"name": "SignIn",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User Email Validate",
+			"item": [
+				{
+					"name": "Valid Email & Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f7c7da19-0641-4e77-8136-29d1bf2e0b46",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Email Status is valid\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql('valid');",
+									"});",
+									"",
+									"pm.test(\"Email is valid\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.email).to.eql('rushantha@zeptolytics.com');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"email\" : \"rushantha@zeptolytics.com\"\n}"
+						},
+						"url": {
+							"raw": "http://www.v3.zepto.io/api/v3/users/email/validate",
+							"protocol": "http",
+							"host": [
+								"www",
+								"v3",
+								"zepto",
+								"io"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users",
+								"email",
+								"validate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Empty Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "104be46b-2eb7-4f8a-9446-05cc7e6558cb",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"Error displayed\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"ValidationError\");",
+									"});",
+									"pm.test(\"Error message displayed\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"`email` is required\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"email\" : \"\"\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/v3/users/email/validate",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users",
+								"email",
+								"validate"
+							]
+						},
+						"description": "send request without entering email"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Email Format",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bcc093ac-0e57-4c7c-9446-c5ec005f4a49",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"Error displayed\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"EmailValidationErr\");",
+									"});",
+									"pm.test(\"Error message displayed\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"`email` is invalid format. value: `rushantha@zepto`\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"email\" : \"rushantha@zepto\"\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/v3/users/email/validate",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users",
+								"email",
+								"validate"
+							]
+						},
+						"description": "send a request an email with invalid format"
+					},
+					"response": []
+				},
+				{
+					"name": "Email Not Found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4616d6a0-822c-4f41-9609-8159c5a8e219",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"pm.test(\"Error displayed\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"NotFoundError\");",
+									"});",
+									"pm.test(\"Error message displayed\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"email not found. value: `rushantha@zepto.com`\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"email\" : \"rushantha@zepto.com\"\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/v3/users/email/validate",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users",
+								"email",
+								"validate"
+							]
+						},
+						"description": "send a request to check whether email is there in the DB "
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Password Validate",
+			"item": [
+				{
+					"name": "Valid Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0d461e35-7bae-4741-8e85-f7cb48376648",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Email Status is valid\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql('valid');",
+									"});",
+									"",
+									"pm.test(\"Email is valid\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.email).to.eql('rushantha@zeptolytics.com');",
+									"});",
+									"",
+									"",
+									"//  pm.test(\"Token is valid\", function () {",
+									"//      var jsonData = pm.response.json();",
+									"//      pm.expect(jsonData.token).to.eql('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJ1c2hhbnRoYUB6ZXB0b2x5dGljcy5jb20iLCJfaWQiOiI1YzkwYWIxNGIwNDY3NDM2NTllMTE4OTQiLCJzaWduVXBTdGF0dXMiOiJUUklBTF9VU0VSIiwiaWF0IjoxNTUyOTg2ODUyfQ.CYnOkYKnVdhlXbHH_BW6zMjQFq-9qj7lH2TbyomcSVs');",
+									"//  });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"email\" : \"{{email}}\",\n \"password\" : \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/v3/users/password/validate",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users",
+								"password",
+								"validate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Empty Email & Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f52d18fe-e893-4243-8eeb-7f598f8d310a",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"Error displayed\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"ValidationError\");",
+									"});",
+									"pm.test(\"Error message displayed\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"`email` is required\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"email\" : \"\",\n \"password\" : \"\"\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/v3/users/password/validate",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users",
+								"password",
+								"validate"
+							]
+						},
+						"description": "Send a request with empty email and password"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Email Format",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "761abddb-ccb2-4ad4-8d57-651d94a91c03",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"Error displayed\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"EmailValidationErr\");",
+									"});",
+									"pm.test(\"Error message displayed\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"`email` is invalid format. value: `rushantha@email`\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"email\" : \"rushantha@email\",\n \"password\" : \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/v3/users/password/validate",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users",
+								"password",
+								"validate"
+							]
+						},
+						"description": "Send request a check whether email format is correct or not"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "296b19de-4bd1-43e5-a127-faec36476525",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"Error displayed\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"PasswordValidationError\");",
+									"});",
+									"pm.test(\"Error message displayed\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"`password` is invalid\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"email\" : \"{{email}}\",\n \"password\" : \"123\"\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/v3/users/password/validate",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users",
+								"password",
+								"validate"
+							]
+						},
+						"description": "Send a request to check the password is valid or not"
+					},
+					"response": []
+				},
+				{
+					"name": "Email Not Found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a9a373c6-32e2-4b09-b27c-2e62abea4dd1",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"pm.test(\"Error displayed\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"NotFoundError\");",
+									"});",
+									"pm.test(\"Error message displayed\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"email not found. value: `rushantha@zepto.com`\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"email\" : \"rushantha@zepto.com\",\n \"password\" : \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/v3/users/password/validate",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users",
+								"password",
+								"validate"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Send a reuest to check whether email is there or not in the DB"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Password Reset",
+			"item": [
+				{
+					"name": "Success Request With Valid Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "aba8d262-d119-4706-845f-d8b7257d6f4e",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Successfully sent the code\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"success\");",
+									"});",
+									"pm.test(\"Sent email\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"rushantha@zeptolytics.com\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"email\" : \"{{email}}\"\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/v3/users/password/reset",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users",
+								"password",
+								"reset"
+							]
+						},
+						"description": "Send a request to check successfully sent a email verification code"
+					},
+					"response": []
+				},
+				{
+					"name": "Empty Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4d7eacdd-81c2-4ac4-961c-66482704fdda",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"Error displayed\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"ValidationError\");",
+									"});",
+									"pm.test(\"Error message displayed\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"`email` is required\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"email\" : \"\"\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/v3/users/password/reset",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users",
+								"password",
+								"reset"
+							]
+						},
+						"description": "Send a request with empty email"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Email Format",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b40cc6c1-2e0b-4ca9-a8e9-d041b3fd1ce0",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"Error displayed\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"EmailValidationErr\");",
+									"});",
+									"pm.test(\"Error message displayed\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"`email` is invalid format. value: `rushantha@email`\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"email\" : \"rushantha@email\"\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/v3/users/password/reset",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users",
+								"password",
+								"reset"
+							]
+						},
+						"description": "Send a request with invalid email format"
+					},
+					"response": []
+				},
+				{
+					"name": "Email Not Found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bfbb5e72-a107-400c-af50-6c7b3ed07a05",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"pm.test(\"Error displayed\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"NotFoundError\");",
+									"});",
+									"pm.test(\"Error message displayed\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"`email` not found\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"email\" : \"rushantha@zepto.com\",\n \"password\" : \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/v3/users/password/reset",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users",
+								"password",
+								"reset"
+							]
+						},
+						"description": "Send a request to check whether email is there or not in the DB"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Password Reset Token Verify",
+			"item": [
+				{
+					"name": "Verify With Valid PW Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8b89257a-cd0f-4bc1-9f53-bcd96ca001d3",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"pw token is valid\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"success\");",
+									"});",
+									"pm.test(\"Sent email\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"rushantha@zeptolytics.com\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"pwtoken\" : \"sha1$8e2521aa$1$2df17dcd13c79b398ab9503ae8b38f4658da025e\"\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/v3/users/pwtoken",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users",
+								"pwtoken"
+							]
+						},
+						"description": "Send a request with valid pw token"
+					},
+					"response": []
+				},
+				{
+					"name": "Empty PW Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "37ec3239-510a-4484-bb9c-181edd3bd64d",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"Error displayed\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"ValidationError\");",
+									"});",
+									"pm.test(\"Error Message\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"`pwtoken` is required\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"pwtoken\" : \"\"\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/v3/users/pwtoken",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users",
+								"pwtoken"
+							]
+						},
+						"description": "Send a request without PW token"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid PW Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "63d4ebc7-10c5-422f-9418-7fae3d4142b1",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"Error displayed\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"PwtokenValidationError\");",
+									"});",
+									"pm.test(\"Error Message\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"`pwtoken` is invalid\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"pwtoken\" : \"asdfghj\"\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/v3/users/pwtoken",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users",
+								"pwtoken"
+							]
+						},
+						"description": "Send a request with invalid PW token"
+					},
+					"response": []
+				},
+				{
+					"name": "Expired PW Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "85ef50ec-c146-4611-9082-8517c082d885",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"Error displayed\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"PwtokenExpiredError\");",
+									"});",
+									"pm.test(\"Error Message\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"`pwtoken` is expried\");",
+									"});",
+									"pm.test(\"Email\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"rushantha@zeptolytics.com\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"pwtoken\" : \"sha1$8e2521aa$1$2df17dcd13c79b398ab9503ae8b38f4658da025e\"\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/v3/users/pwtoken",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users",
+								"pwtoken"
+							]
+						},
+						"description": "Send a request with expired PW token"
+					},
+					"response": []
+				},
+				{
+					"name": "PW Not Found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3d0a2708-72e8-4a17-a5b0-d54bb848aaee",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"Error displayed\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"NotFoundError\");",
+									"});",
+									"pm.test(\"Error Message\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"`pwtoken` is not found\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"pwtoken\" : \"sha1$8e2521aa$1$2df17dcd13c79b398ab9503ae8b38f4658da025f\"\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/v3/users/pwtoken",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users",
+								"pwtoken"
+							]
+						},
+						"description": "Send a request to check whether PW token is there or not in the DB"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Token Verify",
+			"item": [
+				{
+					"name": "Valid User Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "031c2885-8eb4-40f0-9fa0-099327eb2882",
+								"exec": [
+									"pm.test(\"Verify the Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Verify the success status\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"valid\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"token\" : \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJ1c2hhbnRoYUB6ZXB0b2x5dGljcy5jb20iLCJfaWQiOiI1YzkwYWIxNGIwNDY3NDM2NTllMTE4OTQiLCJzaWduVXBTdGF0dXMiOiJUUklBTF9VU0VSIiwiaWF0IjoxNTUzMTQ3NDc3fQ.4WT54uKcxAu0_SujwhUYNIrIj4u5tgZxmfFNV_3ip0g\"\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/v3/users/token",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users",
+								"token"
+							]
+						},
+						"description": "Send a request with valid user token"
+					},
+					"response": []
+				},
+				{
+					"name": "Empty User Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e2bd0bd7-2075-4324-a247-de84c0755875",
+								"exec": [
+									"pm.test(\"Verify the Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"Verify the Error\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"ValidationError\");",
+									"});",
+									"pm.test(\"Verify the Error message\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"`token` is required\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"token\" : \"\"\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/v3/users/token",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users",
+								"token"
+							]
+						},
+						"description": "Send a request without user token"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid User Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ff9e7cba-c434-491d-9fcd-95b90d60cb7d",
+								"exec": [
+									"pm.test(\"Verify the Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"Verify the Error\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"TokenValidationError\");",
+									"});",
+									"pm.test(\"Verify the Error message\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"`token` is invalid\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"token\" : \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.aeyJlbWFpbCI6InJ1c2hhbnRoYUB6ZXB0b2x5dGljcy5jb20iLCJfaWQiOiI1YzkwYWIxNGIwNDY3NDM2NTllMTE4OTQiLCJzaWduVXBTdGF0dXMiOiJUUklBTF9VU0VSIiwiaWF0IjoxNTUzMTQ3NDc3fQ.4WT54uKcxAu0_SujwhUYNIrIj4u5tgZxmfFNV_3ip0g\"\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/v3/users/token",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"users",
+								"token"
+							]
+						},
+						"description": "Send a request with invalid user token"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
